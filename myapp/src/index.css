@@ -23,3 +23,7 @@ a{
   color: white;
   text-decoration: none;
 }
+
+.App{
+  min-height: 100vh;
+}

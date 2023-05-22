@@ -1,9 +1,10 @@
+import { Typography } from '@mui/material'
 import React from 'react'
 
 function About() {
   return (
     <div>
-      <div>This is about page</div>
+      <Typography variant='h1' > this is about page</Typography>
     </div>
   )
 }

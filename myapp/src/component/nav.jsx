@@ -1,23 +1,28 @@
-import { Button } from '@mui/material'
+import { Button, Switch } from '@mui/material'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-function Nav() {
-  
+function Nav({ isDay, setday }) {
+
   return (
     <div className='nav'>
-      <Button variant="contained" color='secondary'>
+      <Button variant="contained" color={isDay ? 'secondary' : 'primary'}>
         <NavLink to='/'>Home</NavLink>
       </Button>
 
-      <Button variant="contained" color='secondary'>
+      <Button variant="contained" color={isDay ? 'secondary' : 'primary'}>
         <NavLink to='/products'>Products</NavLink>
       </Button>
 
-      <Button variant="contained" color='secondary'>
+      <Button variant="contained" color={isDay ? 'secondary' : 'primary'}>
         <NavLink to='/about'>About </NavLink>
       </Button>
 
+      <Switch
+        checked={!isDay}
+        onChange={() => {
+          setday(!isDay);
+        }} />
     </div>
   )
 }
