@@ -18,6 +18,10 @@ function Nav({ isDay, setday }) {
         <NavLink to='/about'>About </NavLink>
       </Button>
 
+      <Button variant="contained" color={isDay ? 'secondary' : 'primary'}>
+        <NavLink to='/signup'>signup </NavLink>
+      </Button>
+
       <Switch
         checked={!isDay}
         onChange={() => {

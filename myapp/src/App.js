@@ -7,6 +7,7 @@ import Products from './pages/products';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useState } from 'react';
 import useStyles from './styles/styles';
+import Signup from './pages/signup';
 
 const myTheme = createTheme({
   palette: {
@@ -26,17 +27,18 @@ function App() {
 
   let [isDay, setday] = useState(true);
   let classes = useStyles();
-  
+
   return (
     <div className={isDay ? classes.AppLight : classes.AppDark}>
       <ThemeProvider theme={myTheme}>
         <BrowserRouter>
-        
+
           <Nav isDay={isDay} setday={setday} />
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/about' element={<About />} />
             <Route path='/products' element={<Products />} />
+            <Route path='/signup' element={<Signup />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

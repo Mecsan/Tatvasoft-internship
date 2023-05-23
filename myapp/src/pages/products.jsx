@@ -29,9 +29,9 @@ function Products() {
 
             <div className={classses.prdocut_container}>
                 {
-                    data.map((item) => {
+                    data.map((item, idx) => {
                         return (
-                            <Product item={item} />
+                            <Product key={idx} item={item} />
                         )
                     })
                 }
