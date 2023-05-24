@@ -8,6 +8,8 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import { useState } from 'react';
 import useStyles from './styles/styles';
 import Signup from './pages/signup';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const myTheme = createTheme({
   palette: {
@@ -30,6 +32,7 @@ function App() {
 
   return (
     <div className={isDay ? classes.AppLight : classes.AppDark}>
+      <ToastContainer />
       <ThemeProvider theme={myTheme}>
         <BrowserRouter>
 

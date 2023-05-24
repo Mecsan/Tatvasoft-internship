@@ -12,18 +12,22 @@ code {
     monospace;
 }
 
-.nav{
+* {
+  box-sizing: border-box;
+}
+
+.nav {
   display: flex;
   justify-content: center;
-  gap:20px;
+  gap: 20px;
   padding: 20px;
 }
 
-a{
+a {
   color: white;
   text-decoration: none;
 }
 
-.App{
+.App {
   min-height: 100vh;
 }

@@ -5,14 +5,18 @@ import { Formik } from 'formik';
 import { Button } from '@mui/material'
 import ErrorField from '../component/ErrorField';
 import useStyles from '../styles/signup';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import request from '../services/request';
 
-const roles = ["buyer", "seller"]
+const roles = [{ rid: 1, role: "seller" },
+{ rid: 2, role: "buyer" }]
 
 let schema = yup.object().shape({
     firstName: yup.string().required("First Name is required"),
     lastName: yup.string().required("Last Name is required"),
     email: yup.string().email("invalid email").required("email is required"),
-    role: yup.string().oneOf(roles, "invalid roles").required("role is required"),
+    roleId: yup.number().oneOf(roles.map(role => role.rid)).required("role is required"),
     password: yup.string().required("password is required").min(6, "password too sort").max(12, "password too large"),
     cpassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match')
         .required('Confirm Password is required')
@@ -22,24 +26,46 @@ const initialValues = {
     firstName: "",
     lastName: "",
     email: "",
-    role: "",
+    roleId: "",
     password: "",
     cpassword: ""
 }
 
 
+
+
 function Signup() {
 
     const classes = useStyles();
+    const navigate = useNavigate();
+
+    const signup = async (values) => {
+        const data = JSON.parse(JSON.stringify(values))
+        delete data.cpassword
+
+        const id = toast.loading("Please wait...")
+        try {
+            let res = await request({
+                method: "post",
+                url: "/api/user",
+                data: JSON.stringify(data)
+            })
+            console.log(res)
+            toast.update(id, { closeButton: true, render: "Register successfully", type: "success", isLoading: false });
+            navigate("/products");
+        } catch (err) {
+            toast.update(id, { closeButton: true, render: err.response.data.error, type: "error", isLoading: false });
+            console.log(err)
+        }
+
+    }
 
     return (
 
         <div>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values) => {
-                    console.log(values)
-                }}
+                onSubmit={signup}
                 validationSchema={schema}
             >
                 {
@@ -51,7 +77,6 @@ function Signup() {
                         handleBlur,
                         handleSubmit
                     }) => {
-
                         return <form className={classes.form} onSubmit={handleSubmit}>
 
                             <div className={classes.formGroup}>
@@ -93,21 +118,26 @@ function Signup() {
                                     <ErrorField touch={touched.email} err={errors.email} />
                                 </div>
 
-                                <div className={classes.formItem} style={{ flexDirection: "row" }}>
+                                <div className={classes.formItem} style={{
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    gap: "20px"
+
+                                }}>
                                     <InputLabel>Roles : </InputLabel>
                                     <Select
+                                        size='small'
                                         variant="standard"
-                                        name='role'
-                                        value={values.role}
+                                        name='roleId'
+                                        value={values.roleId}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     >
                                         {
-                                            roles.map((role, idx) => <MenuItem key={idx} value={role}>{role}</MenuItem>)
+                                            roles.map((role, idx) => <MenuItem key={idx} value={role.rid}>{role.role}</MenuItem>)
                                         }
                                     </Select>
-                                    <ErrorField touch={touched.role} err={errors.role} />
-
+                                    <ErrorField touch={touched.roleId} err={errors.roleId} />
                                 </div>
 
 
@@ -145,7 +175,10 @@ function Signup() {
                                 </div>
                             </div>
 
-                            <Button variant='contained' color='primary' type='submit'>
+                            <Button style={{
+                                color: "white",
+                                cursor: Object.keys(errors).length == 0 ? 'pointer' : 'not-allowed'
+                            }} className={classes.submit} variant='contained' color='primary' type='submit'>
                                 Register
                             </Button>
                         </form>
